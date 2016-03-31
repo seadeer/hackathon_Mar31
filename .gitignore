@@ -1,2 +1,3 @@
 djangoenv/
 *.pyc
+config.py
