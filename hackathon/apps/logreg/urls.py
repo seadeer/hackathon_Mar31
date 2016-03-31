@@ -5,8 +5,9 @@ import views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^login/twitter/$', include(social.apps.django_app.urls, namespace='social'), name='twitterlogin'),
-    url(r'^logout/?$', views.twitter_logout),
+    url(r'^$', views.index),
+    url(r'^login/twitter/$', ), views.login_twitter, name='twitterlogin'),
+    url(r'^logout/?$', views.logout_twitter),
     # twitter-authenticated:
     url(r'^home/?$', views.home),
 )
