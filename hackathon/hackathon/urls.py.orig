@@ -1,4 +1,7 @@
 
+<<<<<<< .merge_file_KopA28
+from django.conf.urls import url, include, patterns
+=======
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
 Examples:
@@ -13,10 +16,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+>>>>>>> .merge_file_mjTuGE
 from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('apps.logreg.urls')),
+<<<<<<< .merge_file_KopA28
+=======
     url(r'^', include('apps.findpad.urls')),
+>>>>>>> .merge_file_mjTuGE
 ]
