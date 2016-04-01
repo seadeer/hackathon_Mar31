@@ -19,7 +19,7 @@ authenticate_url = "https://api.twitter.com/oauth/authenticate"
 def index(request):
     return render(request, 'logreg/index.html')
 
-def login_twitter(request):
+def twitter_login(request):
     # Get token from Twitter
     resp, content = client.request(request_token_url, "GET")
     if resp['status'] != '200':
@@ -30,14 +30,44 @@ def login_twitter(request):
 
     # Redirect user to authentication URL
     url = "%s?oauth_token=%s" %(authenticate_url, request.session['request_token']['oauth_token'])
+    return HttpResponseRedirect(url)
 
-    return HttpResponseRedirect('/home')
+def twitter_authenticated(request):
+    # Use request token to build a new client
+    token = oauth.Token(request.session['request_token']['oauth_token'], request.session['request_token']['oauth_token_secret'])
+    token.set_verifier(request.GET['oauth_verifier'])
+    client = oauth.Client(consumer, token)
+    return render_to_response('logreg/home.html')
 
-@login_required(login_url='/')
+    # Request the authorized access token from Twitter
+    resp, content = client.request(access_token_url, "GET")
+    if resp['status'] != '200':
+        print content
+        raise Exception("Invalid response from Twitter.")
+    access_token = dict(cgi.parse_qsl(content))
+
+    # Lookup user or create if not exists.
+    try:
+        user = User.objects.get(username=access_token['screen_name'])
+    except User.DoesNotExist:
+        user = User.objects.create_user(access_token['screen_name'], '%s@twitter.com' % access_token['screen_name'], access_token['oauth_token_secret'])
+
+        profile = Profile()
+        profile.user = user
+        profile.oauth_token = access_token['oauth_token']
+        profile.oauth_secret = access_token['oauth_token_secret']
+        profile.save()
+
+    user = authenticate(username=access_token['screen_name'], password=access_token['oauth_token_secret'])
+    login(request, user)
+    return redirect('/home')
+
+# @login_required()
 def home(request):
-    return render_to_response('home.html')
+    return render(request, 'logreg/home.html')
 
-@login_required
-def logout_twitter(request):
-    auth_logout(request)
+# @login_required
+def twitter_logout(request):
+    logout(request)
     return redirect('/')
+
