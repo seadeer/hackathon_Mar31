@@ -1,0 +1,14 @@
+<html>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css'%}">
+</head>
+<body>
+    <div class='container'>
+        <h1>I Want To:</h1>
+        <a href="#">FIND A PAD</a>
+        <a href="#">RENT OUT A PAD</a>
+        <button><a href="{% url 'logout' %}">Log Out</a></button>  
+    </div>
+</body>
+</html>
