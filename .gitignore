@@ -1,3 +1,4 @@
 djangoenv/
 *.pyc
 config.py
+db.sqlite3
