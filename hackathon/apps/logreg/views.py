@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout
 from .models import Profile
 import oauth2 as oauth
 import cgi
@@ -34,24 +35,43 @@ def twitter_authenticated(request):
             response.write(u'<h2>Your email is: {0}</h2>'.format(result.user.email))
 
             if result.user.credentials:
-                print result.user
+                credentials = result.user.credentials
+                print credentials
+                twusername = result.user.username
+                print twusername
                 if result.provider.name == 'tw':
                     response.write('Your are logged in with Twitter.<br />')
                      # We will get the user's 5 most recent tweets.
                     url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
                     # You can pass a dictionary of querystring parameters.
                     access_response = result.provider.access(url, {'count': 5})
+                    
                     if access_response.status == 200:
-                        if type(access_response.data) is list:
-                            # Twitter returns the tweets as a JSON list.
-                            response.write('Your 5 most recent tweets:')
-                            for tweet in access_response.data:
-                                text = tweet.get('text')
-                                date = tweet.get('created_at')
+                        try:
+                            user = User.objects.get(username=twusername)
+                            print "User: ", user
+                        except User.DoesNotExist:
+                            token = result.user.credentials.token
+                            token_secret = result.user.credentials.token_secret
+                            user = User.objects.create_user(twusername, '%s@twitter.com' % twusername, token_secret)
+                            profile = Profile()
+                            profile.user = user
+                            profile.oauth_token = token
+                            profile.oauth_secret = token_secret
+                            profile.save()
+                            pass
+
+                        # if type(access_response.data) is list:
+                        #     # Twitter returns the tweets as a JSON list.
+                        #     response.write('Your 5 most recent tweets:')
+                        #     for tweet in access_response.data:
+                        #         text = tweet.get('text')
+                        #         date = tweet.get('created_at')
                                 
-                                response.write(u'<h3>{0}</h3>'.format(text))
-                                response.write(u'Tweeted on: {0}'.format(date))
-                                
+                        #         response.write(u'<h3>{0}</h3>'.format(text))
+                        #         response.write(u'Tweeted on: {0}'.format(date))
+
+                        return HttpResponseRedirect('/home')                                
                     elif response.data.get('errors'):
                         response.write(u'Damn that error: {0}!'.\
                                             format(response.data.get('errors')))
