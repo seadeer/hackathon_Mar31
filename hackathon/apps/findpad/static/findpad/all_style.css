@@ -1,0 +1,26 @@
+*{
+	font-family: monospace;
+}
+.back{
+	font-size: 2em;
+}
+.container{
+	width: 970;
+	min-height: 280px;
+	margin: 0 auto;
+	text-align: center;
+}
+	.container h1{
+		margin-top: 170px;
+	}
+#right{
+	margin-left: 115px;
+}
+#map{
+	width: 300px;
+	height: 300px;
+	margin: 0 auto;
+}
+.big{
+	font-size: 3em;
+}

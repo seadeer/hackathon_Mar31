@@ -3,6 +3,7 @@ from authomatic.adapters import DjangoAdapter
 from config import CONFIG
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
@@ -70,7 +71,7 @@ def twitter_authenticated(request):
                                 
                         #         response.write(u'<h3>{0}</h3>'.format(text))
                         #         response.write(u'Tweeted on: {0}'.format(date))
-
+                        request.session['login'] = 'twitter'
                         return HttpResponseRedirect('/home')                                
                     elif response.data.get('errors'):
                         response.write(u'Damn that error: {0}!'.\
@@ -80,47 +81,31 @@ def twitter_authenticated(request):
                         response.write(u'Status: {0}'.format(response.status))
     return response
   
+def createUser(request):
+    user = User.objects.create(first_name=request.POST['first_name'], username=request.POST['username'],\
+        email=request.POST['email'], password=request.POST['password'])
+    print user.id
+    request.session['id'] = user.id
+    return redirect('home')
 
-# def twitter_authenticated(request):
-#     print id(request)
-#     print(request.session.keys())
+def login(request):
+    print request.POST['username']
+    user = User.objects.get(username=request.POST['username'])
+    request.session['id'] = user.id
+    print User.objects.get(username=request.POST['username'])
+    request.session['login'] = 'app'
+    return redirect('home')
 
-#     token = oauth.Token(request.session['request_token']['oauth_token'],
-#         request.session['request_token']['oauth_token_secret'])
-#     # Use request token to build a new client
-    
-#     token.set_token(request.GET['oauth_token'])
-#     token.set_verifier(request.GET['oauth_verifier'])
-#     client = oauth.Client(consumer, token)
-#     # Request the authorized access token from Twitter
-#     resp, content = client.request(access_token_url, "GET")
-#     # if resp['status'] != '200':
-#     #     raise Exception("Invalid response from Twitter.")
-#     access_token = dict(cgi.parse_qsl(content))
-#     print ("*")*60, "Access_token:", access_token
-
-    # # Lookup user or create if not exists.
-    # try:
-    #     user = User.objects.get(username=access_token['screen_name'])
-    #     print "User: ", user
-    # except User.DoesNotExist:
-    #     user = User.objects.create_user(access_token['screen_name'], '%s@twitter.com' % access_token['screen_name'], access_token['oauth_token_secret'])
-
-    #     profile = Profile()
-    #     profile.user = user
-    #     profile.oauth_token = access_token['oauth_token']
-    #     profile.oauth_secret = access_token['oauth_token_secret']
-    #     profile.save()
-
-    # user = authenticate(username=access_token['screen_name'], password=access_token['oauth_token_secret'])
-    # login(request, user)
-    # return HttpResponseRedirect('/home')
-
-# @login_required(login_url='/')
 def home(request):
-    return render(request, 'logreg/home.html')
+    stuff = {
+        'login_meth': request.session['login']
+    }
+    return render(request, 'logreg/home.html', stuff)
 
-# @login_required(login_url='/')
+def logout(request):
+    del request.session['id']
+    return redirect('index')
+
 def twitter_logout(request):
     logout(request)
     return redirect('/')

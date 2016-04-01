@@ -7,7 +7,10 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', views.index),
     # url(r'^login/?$', views.twitter_login, name='twitterlogin'),
-    url(r'^logout/?$', views.twitter_logout, name='logout'),
+    url(r'^twlogout/?$', views.twitter_logout, name='twitter_logout'),
+	url(r'^logout$', views.logout, name='logout'),
     url(r'^login/authenticated/?$', views.twitter_authenticated),
-    url(r'^home/$', views.home)
+	url(r'^createUser$', views.createUser, name='createUser'),
+	url(r'^login$', views.login, name='login'),
+    url(r'^home/$', views.home, name='home')
 )

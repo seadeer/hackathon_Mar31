@@ -1,7 +1,12 @@
 *{
 	font-family: monospace;
 }
-
+h1{
+	font-size: 3em;
+}
+.back{
+	font-size: 2em;
+}
 .container{
 	width: 970;
 	min-height: 280px;
@@ -9,13 +14,17 @@
 	text-align: center;
 }
 	.container h1{
-		margin-top: 90px;
-		font-size: 3em;
+		margin-top: 170px;
 	}
-
+#right{
+	margin-left: 115px;
+}
 form{
 	border: solid;
 	width: 250px;
 	padding: 20px;
 	display: inline-block;
+}
+.big{
+	font-size: 3em;
 }
