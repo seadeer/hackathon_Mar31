@@ -8,11 +8,21 @@ class Listing(models.Model):
 	description = models.CharField(max_length=200)
 	bedrooms = models.IntegerField()
 	rent = models.IntegerField()
-	status = models.BooleanField()
-	pets = models.BooleanField()
-	washer = models.BooleanField()
+	isAvailable = models.BooleanField(default=True)
+	pets = models.BooleanField(default=False)
+	washer = models.BooleanField(default=False)
 	created_at = models.DateTimeField(datetime.now())
 	def __str__(self):
 		return str(self.id)
 	class Meta:
 		db_table = 'listings'
+
+class Message(models.Model):
+	content = models.TextField(max_length=140)
+	sender = models.ForeignKey(User)
+	recipient = models.ForeignKey(Listing)
+	created_at = models.DateTimeField(datetime.now())
+	def __str__(self):
+		return str(self.id)
+	class Meta:
+		db_table = 'messages'

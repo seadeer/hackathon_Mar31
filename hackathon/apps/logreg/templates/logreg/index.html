@@ -5,8 +5,22 @@
 </head>
 <body>
 	<div class='container'>
-		<h1>LOGIN AND REGISTER HERE</h1>
-		<a href="{% url 'home'%}">LOGIN</a>
+		<h1>PAD FINDER DOT COM</h1>
+		<h2>REGISTER</h2>
+		<form action='{% url "createUser" %}' method='POST'>{% csrf_token %}
+			Name: <br><input type='text' name='name'><br>
+			Username: <br><input type='text' name='username'><br>
+			Email: <br><input type='text' name='email'><br>
+			Password: <br><input type='text' name='password'><br>
+			Confirm: <br><input type='text' name='confirm'><br>
+			<input type='submit' value='REGISTER'><br>
+		</form>
+		<h2>LOGIN</h2>
+		<form action="{% url 'login' %}" method='POST'>{% csrf_token %}
+			Username: <br><input type='text' name='username'><br>
+			Password: <br><input type='text' name='password'><br>
+			<input type='submit' value='LOGIN'>
+		</form>
 	</div>
 </body>
 </html>

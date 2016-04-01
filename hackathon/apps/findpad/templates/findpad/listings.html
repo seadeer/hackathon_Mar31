@@ -1,0 +1,19 @@
+<html>
+	<head>
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static 'findpad/all_style.css'%}">
+	</head>
+	<body>
+		<a href="{% url 'home' %}" class='back'>HOME</a>
+		<div class='container'>
+			<h1>Listings in ur AREA</h1>
+			{% for listing in listings %}
+			<h2>Lister: {{listing.lister}}</h2>
+			<h3 id='addressInput'>{{listing.address}}</h3>
+			<p>Rent per Month: {{listing.rent}}</p>
+			<a href="{% url 'one' listing.id %}">MORE DEETS</a>
+			<hr>
+			{% endfor %}
+		</div>
+	</body>
+</html>

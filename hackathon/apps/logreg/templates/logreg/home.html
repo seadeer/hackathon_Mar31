@@ -1,13 +1,15 @@
 <html>
 <head>
 	{% load staticfiles %}
-	<link rel="stylesheet" type="text/css" href="{% static 'logreg/style.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'findpad/style.css'%}">
 </head>
 <body>
+	<a href="{% url 'logout' %}" class='back'>LOGOUT</a>
 	<div class='container'>
-		<h1>I Want To:</h1>
-		<a href="#">FIND A PAD</a>
-		<a href="#">RENT OUT A PAD</a>
+		<h2>Hello, {{user}}</h2>
+		<h1 class='big'>I Want To:</h1>
+		<a href="{% url 'show' %}" class='big'>FIND A PAD</a>
+		<a href="{% url 'new' %}" class='big' id='right'>RENT OUT A PAD</a>
 	</div>
 </body>
 </html>

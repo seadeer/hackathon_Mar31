@@ -1,0 +1,30 @@
+<html>
+	<head>
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static 'findpad/new_style.css'%}">
+	</head>
+	<body>
+		<a href="{% url 'home' %}" class='back'>HOME</a>
+		<div class='container'>
+			<h1>Add a new Listing</h1>
+			<form action="{% url 'create' %}" method='POST'>{% csrf_token %}
+				Address: <br><input type='text' name='address'><br>
+				Description: <br><input type='text' name='description'><br>
+				Rent: <br><input type='number' min='1' name='rent'><br>
+				# Bedrooms: <br><input type='number' min='0' name='bedrooms'><br>
+				Allow Pets: <br><input type='checkbox' name='pets'><br>
+				Washer/Dryer: <br><input type='checkbox' name='washer'><br>
+
+			<!-- 	Allow Pets: <select name='pets'>
+								<option>YES</option>
+								<option>NO</option>
+							</select>
+				Washer/Dryer: <select name='washer'>
+								<option>YES</option>
+								<option>NO</option>
+							</select> -->
+							<input type='submit' value='Add Listing'>
+			</form>
+		</div>
+	</body>
+</html>
