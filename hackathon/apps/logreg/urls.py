@@ -6,8 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', views.index),
-    url(r'^login/twitter/$', ), views.login_twitter, name='twitterlogin'),
+    url(r'^login/twitter/$', views.login_twitter, name='twitterlogin'),
     url(r'^logout/?$', views.logout_twitter),
-    # twitter-authenticated:
     url(r'^home/?$', views.home),
 )

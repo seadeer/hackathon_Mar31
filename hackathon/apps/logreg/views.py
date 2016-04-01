@@ -1,9 +1,10 @@
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.models import User
+# from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from models import Profile
+from .models import Profile
+import oauth2 as oauth
 import config
 import cgi
 
