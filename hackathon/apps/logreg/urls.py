@@ -5,7 +5,7 @@ import views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', views.index),
+    url(r'^$', views.index, name='index'),
     # url(r'^login/?$', views.twitter_login, name='twitterlogin'),
     url(r'^twlogout/?$', views.twitter_logout, name='twitter_logout'),
 	url(r'^logout$', views.logout, name='logout'),

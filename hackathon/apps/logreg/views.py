@@ -108,6 +108,6 @@ def logout(request):
 
 def twitter_logout(request):
     logout(request)
-    return redirect('/')
+    return redirect('index')
 
 
