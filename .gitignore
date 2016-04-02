@@ -3,3 +3,4 @@ djangoenv/
 config.py
 db.sqlite3
 _config.py
+hackathon/apps/findpad/migrations
