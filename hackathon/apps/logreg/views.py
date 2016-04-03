@@ -50,7 +50,8 @@ def twitter_authenticated(request):
                     if access_response.status == 200:
                         try:
                             user = User.objects.get(username=twusername)
-                            print "User: ", user
+                            request.session['id'] = user.id
+                            print "User exists!", user
                         except User.DoesNotExist:
                             token = result.user.credentials.token
                             token_secret = result.user.credentials.token_secret
@@ -97,8 +98,10 @@ def login(request):
     return redirect('home')
 
 def home(request):
+    user = User.objects.get(id=request.session['id'])
     stuff = {
-        'login_meth': request.session['login']
+        'login_meth': request.session['login'],
+        'user': user,
     }
     return render(request, 'logreg/home.html', stuff)
 
