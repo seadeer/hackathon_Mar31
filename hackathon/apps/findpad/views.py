@@ -8,15 +8,28 @@ def new(request):
 
 def create(request):
 	aUser = User.objects.get(id=request.session['id'])
+	print request.POST
 	print request.POST['address']
+	try:
+		request.POST['pets']
+	except:
+		pets = False
+	else:
+		pets = True
+	try:
+		request.POST['washer']
+	except:
+		washer = False
+	else:
+		washer = True
 	Listing.objects.create(address=request.POST['address'], \
 						   lister=aUser,\
 						   description=request.POST['description'], \
 						   bedrooms=request.POST['bedrooms'],\
 						   rent=request.POST['rent'],\
 						   isAvailable=True,\
-						   pets=request.POST['pets'],\
-						   washer=request.POST['washer'],\
+						   pets=pets,\
+						   washer=washer,\
 						   created_at=timezone.now())
 	return redirect('show')
 
