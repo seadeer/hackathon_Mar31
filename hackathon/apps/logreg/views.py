@@ -61,6 +61,8 @@ def twitter_authenticated(request):
                             profile.oauth_token = token
                             profile.oauth_secret = token_secret
                             profile.save()
+                            user = User.objects.get(username=twusername) 
+                            request.session['id'] = user.id
                             pass
 
                         # if type(access_response.data) is list:
